@@ -13,3 +13,7 @@ DirectX12 learning
 [CPU与GPU交互](https://www.muchenhen.com/2019/11/04/directx-12-4-2cpu-gpu%e4%ba%a4%e4%ba%92/)   
 ## 渲染管线部分   
 [输入合并阶段](https://www.muchenhen.com/2020/03/19/directx-12-5-5-%e8%be%93%e5%85%a5%e8%a3%85%e9%85%8d%e9%98%b6%e6%ae%b5/)   
+[顶点着色器阶段](https://www.muchenhen.com/2020/03/19/directx-12-5-6-%e9%a1%b6%e7%82%b9%e7%9d%80%e8%89%b2%e5%99%a8%e9%98%b6%e6%ae%b5/)   
+[细分着色器阶段](https://www.muchenhen.com/2020/03/20/directx-12-5-7-tessellation%e9%98%b6%e6%ae%b5/)   
+[几何着色器阶段](https://www.muchenhen.com/2020/03/20/directx-12-5-8-%e5%87%a0%e4%bd%95%e7%9d%80%e8%89%b2%e9%98%b6%e6%ae%b5/)   
+[裁剪阶段](https://www.muchenhen.com/2020/03/20/directx-12-5-9-%e8%a3%81%e5%89%aa/)   
