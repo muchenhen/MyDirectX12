@@ -17,3 +17,5 @@ DirectX12 learning
 [细分着色器阶段](https://www.muchenhen.com/2020/03/20/directx-12-5-7-tessellation%e9%98%b6%e6%ae%b5/)   
 [几何着色器阶段](https://www.muchenhen.com/2020/03/20/directx-12-5-8-%e5%87%a0%e4%bd%95%e7%9d%80%e8%89%b2%e9%98%b6%e6%ae%b5/)   
 [裁剪阶段](https://www.muchenhen.com/2020/03/20/directx-12-5-9-%e8%a3%81%e5%89%aa/)   
+[光栅化阶段](https://www.muchenhen.com/2020/03/22/directx12-5-10-%e5%85%89%e6%a0%85%e5%8c%96%e9%98%b6%e6%ae%b5/)   
+[像素着色器阶段和输出合并阶段](https://www.muchenhen.com/2020/03/22/dx12-5-1112-%e5%83%8f%e7%b4%a0%e7%9d%80%e8%89%b2%e5%99%a8%e9%98%b6%e6%ae%b5%e5%92%8c%e8%be%93%e5%87%ba%e5%90%88%e5%b9%b6%e9%98%b6%e6%ae%b5/)   
