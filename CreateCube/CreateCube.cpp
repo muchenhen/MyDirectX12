@@ -1,12 +1,3 @@
-//***************************************************************************************
-// BoxApp.cpp by Frank Luna (C) 2015 All Rights Reserved.
-//
-// Shows how to draw a box in Direct3D 12.
-//
-// Controls:
-//   Hold the left mouse button down and move the mouse to rotate.
-//   Hold the right mouse button down and move the mouse to zoom in and out.
-//***************************************************************************************
 
 #include "../Common/d3dApp.h"
 #include "../Common/MathHelper.h"
@@ -117,7 +108,7 @@ bool BoxApp::Initialize()
     if (!D3DApp::Initialize())
         return false;
 
-    // Reset the command list to prep for initialization commands.
+    // 重置命令列表，准备初始化命令
     ThrowIfFailed(mCommandList->Reset(mDirectCmdListAlloc.Get(), nullptr));
 
     BuildDescriptorHeaps();
@@ -127,12 +118,12 @@ bool BoxApp::Initialize()
     BuildBoxGeometry();
     BuildPSO();
 
-    // Execute the initialization commands.
+    // 执行初始化命令
     ThrowIfFailed(mCommandList->Close());
     ID3D12CommandList* cmdsLists[] = { mCommandList.Get() };
     mCommandQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
 
-    // Wait until initialization is complete.
+    //等待到初始化完成
     FlushCommandQueue();
 
     return true;
@@ -361,8 +352,10 @@ void BoxApp::BuildShadersAndInputLayout()
     };
 }
 
+//创建正方体几何体
 void BoxApp::BuildBoxGeometry()
 {
+    //顶点数据
     std::array<Vertex, 8> vertices =
     {
         Vertex({ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(Colors::White) }),
@@ -374,36 +367,36 @@ void BoxApp::BuildBoxGeometry()
         Vertex({ XMFLOAT3(+1.0f, +1.0f, +1.0f), XMFLOAT4(Colors::Cyan) }),
         Vertex({ XMFLOAT3(+1.0f, -1.0f, +1.0f), XMFLOAT4(Colors::Magenta) })
     };
-
+    //索引缓冲
     std::array<std::uint16_t, 36> indices =
     {
-        // front face
+        // 前面
         0, 1, 2,
         0, 2, 3,
 
-        // back face
+        // 后面
         4, 6, 5,
         4, 7, 6,
 
-        // left face
+        // 左面
         4, 5, 1,
         4, 1, 0,
 
-        // right face
+        // 右面
         3, 2, 6,
         3, 6, 7,
 
-        // top face
+        // 上面
         1, 5, 6,
         1, 6, 2,
 
-        // bottom face
+        // 下面
         4, 0, 3,
         4, 3, 7
     };
 
-    const UINT vbByteSize = (UINT)vertices.size() * sizeof(Vertex);
-    const UINT ibByteSize = (UINT)indices.size() * sizeof(std::uint16_t);
+    const UINT vbByteSize = (UINT)vertices.size() * sizeof(Vertex);//顶点缓存的字节长度
+    const UINT ibByteSize = (UINT)indices.size() * sizeof(std::uint16_t);//索引缓冲的字节长度
 
     mBoxGeo = std::make_unique<MeshGeometry>();
     mBoxGeo->Name = "boxGeo";
