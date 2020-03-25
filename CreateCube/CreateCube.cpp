@@ -412,7 +412,7 @@ void BoxApp::BuildBoxGeometry()
 
     mBoxGeo->IndexBufferGPU = d3dUtil::CreateDefaultBuffer(md3dDevice.Get(),
         mCommandList.Get(), indices.data(), ibByteSize, mBoxGeo->IndexBufferUploader);
-
+     
     mBoxGeo->VertexByteStride = sizeof(Vertex);
     mBoxGeo->VertexBufferByteSize = vbByteSize;
     mBoxGeo->IndexFormat = DXGI_FORMAT_R16_UINT;
