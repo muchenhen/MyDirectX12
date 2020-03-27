@@ -21,3 +21,4 @@ DirectX12 learning
 [像素着色器阶段和输出合并阶段](https://www.muchenhen.com/2020/03/22/dx12-5-1112-%e5%83%8f%e7%b4%a0%e7%9d%80%e8%89%b2%e5%99%a8%e9%98%b6%e6%ae%b5%e5%92%8c%e8%be%93%e5%87%ba%e5%90%88%e5%b9%b6%e9%98%b6%e6%ae%b5/)   
 ## 开始绘制   
 [顶点缓冲](https://www.muchenhen.com/2020/03/26/dx12-6-2-vertex-buffer/)    
+[顶点索引](https://www.muchenhen.com/2020/03/27/6-3-indices-and-index-buffers/)   
