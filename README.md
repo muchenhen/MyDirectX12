@@ -23,3 +23,4 @@ DirectX12 learning
 [顶点与输入布局](https://www.muchenhen.com/2020/03/27/dx12-6-1-vertices-%e5%92%8c-input-layouts/)   
 [顶点缓冲](https://www.muchenhen.com/2020/03/26/dx12-6-2-vertex-buffer/)    
 [顶点索引](https://www.muchenhen.com/2020/03/27/6-3-indices-and-index-buffers/)   
+[顶点着色器示例](https://www.muchenhen.com/2020/03/29/dx12-6-4-%e9%a1%b6%e7%82%b9%e7%9d%80%e8%89%b2%e5%99%a8%e5%ae%9e%e4%be%8b/)   
