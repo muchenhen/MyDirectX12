@@ -181,7 +181,7 @@ void BoxApp::Draw(const GameTimer& gt)
         D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
 
     // Clear the back buffer and depth buffer.
-    mCommandList->ClearRenderTargetView(CurrentBackBufferView(), Colors::LightSteelBlue, 0, nullptr);
+    mCommandList->ClearRenderTargetView(CurrentBackBufferView(), Colors::Black, 0, nullptr);
     mCommandList->ClearDepthStencilView(DepthStencilView(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
 
     // Specify the buffers we are going to render to.
@@ -356,7 +356,7 @@ void BoxApp::BuildShadersAndInputLayout()
 void BoxApp::BuildBoxGeometry()
 {
     //顶点数据
-    std::array<Vertex, 8> vertices =
+    /*std::array<Vertex, 8> vertices =
     {
         Vertex({ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(Colors::White) }),
         Vertex({ XMFLOAT3(-1.0f, +1.0f, -1.0f), XMFLOAT4(Colors::Black) }),
@@ -366,34 +366,50 @@ void BoxApp::BuildBoxGeometry()
         Vertex({ XMFLOAT3(-1.0f, +1.0f, +1.0f), XMFLOAT4(Colors::Yellow) }),
         Vertex({ XMFLOAT3(+1.0f, +1.0f, +1.0f), XMFLOAT4(Colors::Cyan) }),
         Vertex({ XMFLOAT3(+1.0f, -1.0f, +1.0f), XMFLOAT4(Colors::Magenta) })
-    };
+    };*/
+
+	std::array<Vertex, 8> vertices =
+	{
+		Vertex({ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(Colors::White) }),
+		Vertex({ XMFLOAT3(-1.0f, +1.0f, -1.0f), XMFLOAT4(Colors::White) }),
+		Vertex({ XMFLOAT3(+1.0f, +1.0f, -1.0f), XMFLOAT4(Colors::White) }),
+		Vertex({ XMFLOAT3(+1.0f, -1.0f, -1.0f), XMFLOAT4(Colors::White) }),
+	};
+
+	std::array<std::uint16_t, 36> indices =
+	{
+		// 前面
+		0, 1, 2,
+		0, 2, 3,
+	};
+
     //索引缓冲
-    std::array<std::uint16_t, 36> indices =
-    {
-        // 前面
-        0, 1, 2,
-        0, 2, 3,
+    //std::array<std::uint16_t, 36> indices =
+    //{
+    //    // 前面
+    //    0, 1, 2,
+    //    0, 2, 3,
 
-        // 后面
-        4, 6, 5,
-        4, 7, 6,
+    //    // 后面
+    //    4, 6, 5,
+    //    4, 7, 6,
 
-        // 左面
-        4, 5, 1,
-        4, 1, 0,
+    //    // 左面
+    //    4, 5, 1,
+    //    4, 1, 0,
 
-        // 右面
-        3, 2, 6,
-        3, 6, 7,
+    //    // 右面
+    //    3, 2, 6,
+    //    3, 6, 7,
 
-        // 上面
-        1, 5, 6,
-        1, 6, 2,
+    //    // 上面
+    //    1, 5, 6,
+    //    1, 6, 2,
 
-        // 下面
-        4, 0, 3,
-        4, 3, 7
-    };
+    //    // 下面
+    //    4, 0, 3,
+    //    4, 3, 7
+    //};
 
     const UINT vbByteSize = (UINT)vertices.size() * sizeof(Vertex);//顶点缓存的字节长度
     const UINT ibByteSize = (UINT)indices.size() * sizeof(std::uint16_t);//索引缓冲的字节长度
