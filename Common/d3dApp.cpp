@@ -412,6 +412,7 @@ bool D3DApp::InitDirect3D()
 {
 #if defined(DEBUG) || defined(_DEBUG) 
 	// Enable the D3D12 debug layer.
+	// 启用D3D12的debug层
 	{
 		ComPtr<ID3D12Debug> debugController;
 		ThrowIfFailed(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController)));
@@ -422,12 +423,14 @@ bool D3DApp::InitDirect3D()
 	ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(&mdxgiFactory)));
 
 	// Try to create hardware device.
+	// 尝试创建硬件设备
 	HRESULT hardwareResult = D3D12CreateDevice(
-		nullptr,             // default adapter
-		D3D_FEATURE_LEVEL_11_0,
-		IID_PPV_ARGS(&md3dDevice));
+		nullptr,             // default adapter 空指针会使用主显示适配器（主显卡）
+		D3D_FEATURE_LEVEL_11_0,//最低支持的功能级别
+		IID_PPV_ARGS(&md3dDevice));//返回创建的设备接口的COM ID
 
 	// Fallback to WARP device.
+	// 如果创建硬件设备失败则退回到软件设备 Windows高级光栅化平台
 	if (FAILED(hardwareResult))
 	{
 		ComPtr<IDXGIAdapter> pWarpAdapter;
@@ -439,15 +442,17 @@ bool D3DApp::InitDirect3D()
 			IID_PPV_ARGS(&md3dDevice)));
 	}
 
+	// 创建围栏
 	ThrowIfFailed(md3dDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE,
 		IID_PPV_ARGS(&mFence)));
 
+	// 获取描述符的大小
 	mRtvDescriptorSize = md3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 	mDsvDescriptorSize = md3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
 	mCbvSrvUavDescriptorSize = md3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-	// Check 4X MSAA quality support for our back buffer format.
-	// All Direct3D 11 capable devices support 4X MSAA for all render 
+	// Check 4X MSAA quality support for our back buffer format. 检查后缓冲格式对4X MSAA的质量支持
+	// All Direct3D 11 capable devices support 4X MSAA for all render  所有支持DX11的平台都会支持DX11 所以只需要检查质量级别
 	// target formats, so we only need to check quality support.
 
 	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS msQualityLevels;
@@ -467,9 +472,9 @@ bool D3DApp::InitDirect3D()
 	LogAdapters();
 #endif
 
-	CreateCommandObjects();
-	CreateSwapChain();
-	CreateRtvAndDsvDescriptorHeaps();
+	CreateCommandObjects();// 创建命令队列
+	CreateSwapChain();// 创建交换链
+	CreateRtvAndDsvDescriptorHeaps();// 创建描述符堆
 
 	return true;
 }
@@ -479,40 +484,46 @@ void D3DApp::CreateCommandObjects()
 	D3D12_COMMAND_QUEUE_DESC queueDesc = {};
 	queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
 	queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+
+	// 创建命令队列
 	ThrowIfFailed(md3dDevice->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&mCommandQueue)));
 
+	// 创建命令分配器
 	ThrowIfFailed(md3dDevice->CreateCommandAllocator(
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
 		IID_PPV_ARGS(mDirectCmdListAlloc.GetAddressOf())));
 
+	// 创建命令列表
 	ThrowIfFailed(md3dDevice->CreateCommandList(
 		0,
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
-		mDirectCmdListAlloc.Get(), // Associated command allocator
-		nullptr,                   // Initial PipelineStateObject
+		mDirectCmdListAlloc.Get(), // 关联命令分配器
+		nullptr,                   // 初始化流水线状态对象
 		IID_PPV_ARGS(mCommandList.GetAddressOf())));
 
 	// Start off in a closed state.  This is because the first time we refer 
 	// to the command list we will Reset it, and it needs to be closed before
 	// calling Reset.
+	// 第一次引用命令列表需要重置，但是重置之前要close
 	mCommandList->Close();
 }
 
 void D3DApp::CreateSwapChain()
 {
 	// Release the previous swapchain we will be recreating.
+	// 释放之前创建的交换链，之后会重建
 	mSwapChain.Reset();
 
 	DXGI_SWAP_CHAIN_DESC sd;
-	sd.BufferDesc.Width = mClientWidth;
-	sd.BufferDesc.Height = mClientHeight;
-	sd.BufferDesc.RefreshRate.Numerator = 60;
-	sd.BufferDesc.RefreshRate.Denominator = 1;
-	sd.BufferDesc.Format = mBackBufferFormat;
-	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-	sd.SampleDesc.Count = m4xMsaaState ? 4 : 1;
-	sd.SampleDesc.Quality = m4xMsaaState ? (m4xMsaaQuality - 1) : 0;
+	sd.BufferDesc.Width = mClientWidth; // 缓冲区分辨率的宽度
+	sd.BufferDesc.Height = mClientHeight; // 缓冲区分辨率的高度
+	sd.BufferDesc.RefreshRate.Numerator = 60; // 刷新率 分子
+	sd.BufferDesc.RefreshRate.Denominator = 1;// 刷新率 分母
+	sd.BufferDesc.Format = mBackBufferFormat; // 缓冲区显示格式
+	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED; // 扫描方式
+	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED; // 图像对于屏幕的拉伸方式
+	sd.SampleDesc.Count = m4xMsaaState ? 4 : 1; // 每像素的采样数量
+	sd.SampleDesc.Quality = m4xMsaaState ? (m4xMsaaQuality - 1) : 0; // 所需要的质量级别
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	sd.BufferCount = SwapChainBufferCount;
 	sd.OutputWindow = mhMainWnd;
